@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 
 // import { Map, MapStyle, config } from '@maptiler/sdk';
 import * as MapTiler from '@maptiler/sdk';
 
 // import '@maptiler/sdk/dist/maptiler-sdk.css';
-import { environment } from 'src/environments/environment';
-
 
 
 @Component({
@@ -13,18 +11,16 @@ import { environment } from 'src/environments/environment';
   templateUrl: './full-screen-page.component.html',
   styleUrls: ['./full-screen-page.component.css']
 })
-export class FullScreenPageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FullScreenPageComponent implements OnDestroy, AfterViewInit {
 
   public map: MapTiler.Map | undefined;
   @ViewChild('map')
-  private mapContainer!: ElementRef<HTMLElement>;
-
-  ngOnInit(): void {
-    MapTiler.config.apiKey = environment.API_KEY;
-  }
+  private mapContainer?: ElementRef<HTMLElement>;
 
   ngAfterViewInit(): void {
     const initialState = { lng: 139.753, lat: 35.6844, zoom: 14 };
+
+    if(!this.mapContainer) throw new Error('El elemento HTML  no fue encontrado');
 
     this.map = new MapTiler.Map({
       container: this.mapContainer.nativeElement,

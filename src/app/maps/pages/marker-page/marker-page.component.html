@@ -1,1 +1,15 @@
-<p>marker-page works!</p>
+<div class="map-wrap">
+  <div class="map" #map></div>
+</div>
+
+<ul class="list-group">
+  <li *ngFor="let markerColor of markers; let i = index"
+    class="list-group-item"
+    [ngStyle]="{ 'backgroundColor': markerColor.color }"
+    (dblclick)="deleteMarker(i)"
+    (click)="flyTo(markerColor.marker)">
+    Marker {{ i + 1 }}
+  </li>
+</ul>
+
+<button class="btn btn-primary" (click)="createMarker()"> + Agregar marcador</button>
