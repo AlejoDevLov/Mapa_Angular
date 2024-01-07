@@ -8,6 +8,11 @@ interface MarkerAndColor {
   marker: Marker
 }
 
+interface PlainMarker {
+  color: string,
+  lngLat: number[]
+}
+
 @Component({
   selector: 'app-marker-page',
   templateUrl: './marker-page.component.html',
@@ -32,12 +37,13 @@ export class MarkerPageComponent implements AfterViewInit, OnDestroy {
       style: MapTiler.MapStyle.STREETS,
       center: [-75.5708,6.2457],
       zoom: initialState.zoom
-    })
+    });
+
+    this.readFromLocalStorage();
 
     // Personalizar marcador
     // const markerHtml = document.createElement('div');
     // markerHtml.textContent = 'Alejo'
-
     new MapTiler.Marker({
       color: "#FF0000",
       // element: markerHtml
@@ -70,6 +76,12 @@ export class MarkerPageComponent implements AfterViewInit, OnDestroy {
     .addTo(this.map)
 
     this.markers.push({ color, marker });
+    this.saveToLocalStorage();
+
+    // Crear evento para actualizar referencia en localStorage cuando el marcador se termina de mover
+    marker.on('dragend', () => {
+      this.saveToLocalStorage();
+    })
   }
 
   deleteMarker( index: number ): void{
@@ -85,6 +97,27 @@ export class MarkerPageComponent implements AfterViewInit, OnDestroy {
     this.map?.flyTo({
       zoom: 14,
       center: marker.getLngLat()
+    })
+  }
+
+  saveToLocalStorage(){
+    // Debemos crear un objeto con la informacion necesaria para almacenar en el localStorage,
+    // no podemos almacenar el objeto completo de marker ya que es un elemento muy complejo y no permite ser almacenado en el localStorage
+    const plainMarkers: PlainMarker[] = this.markers.map( ({ color, marker }) => {
+      return {
+        color,
+        lngLat: marker.getLngLat().toArray()
+      }
+    })
+    localStorage.setItem('plainMarkers', JSON.stringify(plainMarkers));
+  }
+
+  readFromLocalStorage(){
+    const plainMarkers: PlainMarker[] = JSON.parse(localStorage.getItem('plainMarkers')!) ?? [];
+    plainMarkers.forEach( ({ color, lngLat }) => {
+      const [lng, lat] = lngLat;
+      const coords = new LngLat(lng, lat);
+      this.addMarker(coords, color);
     })
   }
 }
