@@ -16,9 +16,8 @@ export class FullScreenPageComponent implements OnDestroy, AfterViewInit {
   public map: MapTiler.Map | undefined;
   @ViewChild('map')
   private mapContainer?: ElementRef<HTMLElement>;
-
   ngAfterViewInit(): void {
-    const initialState = { lng: 139.753, lat: 35.6844, zoom: 14 };
+    const initialState = { lng: -75.5708, lat: 6.2457, zoom: 14 };
 
     if(!this.mapContainer) throw new Error('El elemento HTML  no fue encontrado');
 
