@@ -14,7 +14,7 @@
     <div class="row">
 
       <!-- Houses -->
-      <div class="col-4 mb-2" *ngFor="let house of houses">
+      <div class="col-10 mb-2 col-sm-6 col-md-4" *ngFor="let house of houses">
         <div class="card">
           <!-- <img src="..." alt="imagen Casa" class="card-img-top"> -->
           <maps-mini-map [lngLat]="house.lngLat"/>
