@@ -16,7 +16,7 @@
             "outputPath": "dist/mapas",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "baseHref": "/mapa_angular/",
+            "baseHref": "/Mapa_Angular/",
             "polyfills": [
               "zone.js"
             ],
